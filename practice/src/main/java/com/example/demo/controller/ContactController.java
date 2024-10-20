@@ -9,15 +9,15 @@ import org.springframework.web.servlet.ModelAndView;
 public class ContactController {
 	@PostMapping("/contact")
 	public ModelAndView contact(@RequestParam("lastName") String lastName,
-								@RequestParam("firstName") String firstName,
-								@RequestParam("email") String email,
-								@RequestParam("phone") String phone,
-								@RequestParam("zipCode") String zipCode,
-								@RequestParam("address") String address,
-								@RequestParam("buildingName") String buildingName,
-								@RequestParam("contactType") String contactType,
-								@RequestParam("body") String body,
-								ModelAndView mv) {
+			@RequestParam("firstName") String firstName,
+			@RequestParam("email") String email,
+			@RequestParam("phone") String phone,
+			@RequestParam("zipCode") String zipCode,
+			@RequestParam("address") String address,
+			@RequestParam("buildingName") String buildingName,
+			@RequestParam("contactType") String contactType,
+			@RequestParam("body") String body,
+			ModelAndView mv) {
 
 		mv.setViewName("confirmation");
 
