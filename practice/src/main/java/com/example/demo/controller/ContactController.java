@@ -8,7 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ContactController {
 	@PostMapping("/contact")
-	public ModelAndView contact(@RequestParam("lastName") String lastName,
+	public ModelAndView contact(
+			@RequestParam("lastName") String lastName,
 			@RequestParam("firstName") String firstName,
 			@RequestParam("email") String email,
 			@RequestParam("phone") String phone,
