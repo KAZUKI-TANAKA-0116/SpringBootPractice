@@ -24,10 +24,13 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 
+	@Autowired
+	private ContactService contactService; 
+
 	@GetMapping("/signup")
 	public String signup(Model model) {
 		model.addAttribute("adminForm", new AdminForm());
-		return "signup"; // signup.htmlを返す
+		return "signup"; // signup.html
 	}
 
 	@PostMapping("/signup")
@@ -44,22 +47,9 @@ public class AdminController {
 		return "signin"; // signin.html
 	}
 
-	@PostMapping("/signin")
-	public String login(String email, String password, Model model) {
-		if (adminService.validateAdmin(email, password)) {
-			return "redirect:/admin/contacts"; // ログイン成功
-		} else {
-			model.addAttribute("error", "メールアドレスまたはパスワードが間違っています。");
-			return "signin"; // エラーは再表示
-		}
-	}
-
-	@Autowired
-	private ContactService contactService;
-
 	@GetMapping("/contacts")
 	public String showContacts(Model model) {
-		List<Contact> contacts = contactService.getAllContacts(); // お問い合わせを取得
+		List<Contact> contacts = contactService.getAllContacts(); // すべてのお問い合わせを取得
 		model.addAttribute("contacts", contacts);
 		return "contacts"; // contacts.html
 	}

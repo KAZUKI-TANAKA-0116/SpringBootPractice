@@ -13,6 +13,11 @@ import com.example.demo.repository.ContactRepository;
 public class ContactServiceImpl implements ContactService {
     @Autowired
     private ContactRepository contactRepository;
+    
+    @Override
+    public List<Contact> getAllContacts() {
+        return contactRepository.findAll();
+    }
 
     @Override
     public void saveContact(ContactForm contactForm) {
@@ -28,10 +33,5 @@ public class ContactServiceImpl implements ContactService {
         contact.setBody(contactForm.getBody());
 
         contactRepository.save(contact);
-    }
-
-    @Override
-    public List<Contact> getAllContacts() {
-        return contactRepository.findAll(); // 追加
     }
 }

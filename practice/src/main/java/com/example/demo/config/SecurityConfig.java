@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -18,14 +19,20 @@ public class SecurityConfig {
 				.anyRequest().authenticated() // 他のURLは用認証
 				.and()
 				.formLogin()
-				.loginPage("/admin/signin") // ログインページ
+				.loginPage("/admin/signin") // カスタムのログインページ
+				.defaultSuccessUrl("/admin/contacts") // ログイン成功時
+				.failureUrl("/admin/signin?error=true") // ログイン失敗時
 				.permitAll()
-		        .failureUrl("/admin/signin?error") // ログイン失敗時
-		        
 				.and()
 				.logout()
 				.permitAll();
 
 		return http.build();
+	}
+
+	// パスワードエンコーダーのBean定義
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }
