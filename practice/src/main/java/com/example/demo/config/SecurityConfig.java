@@ -20,8 +20,8 @@ public class SecurityConfig {
 				.and()
 				.formLogin()
 				.loginPage("/admin/signin") // カスタムのログインページ
-				.defaultSuccessUrl("/admin/contacts") // ログイン成功時
-				.failureUrl("/admin/signin?error=true") // ログイン失敗時
+				.defaultSuccessUrl("/admin/contacts") // ログイン成功
+				.failureUrl("/admin/signin?error=true") // ログイン失敗
 				.permitAll()
 				.and()
 				.logout()

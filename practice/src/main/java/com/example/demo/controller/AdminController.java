@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,7 +26,7 @@ public class AdminController {
 	private AdminService adminService;
 
 	@Autowired
-	private ContactService contactService; 
+	private ContactService contactService;
 
 	@GetMapping("/signup")
 	public String signup(Model model) {
@@ -53,4 +54,34 @@ public class AdminController {
 		model.addAttribute("contacts", contacts);
 		return "contacts"; // contacts.html
 	}
+
+	@GetMapping("/contact/{id}")
+	public String showContactDetail(@PathVariable Long id, Model model) {
+		Contact contact = contactService.getContactById(id); // IDに基づいてDBからデータ取得
+		model.addAttribute("contact", contact);
+		return "contactdetail"; // contactdetail.html
+	}
+
+	@GetMapping("/contacts/{id}/edit")
+	public String showEditContactForm(@PathVariable Long id, Model model) {
+		Contact contact = contactService.getContactById(id); //IDに基づいてDBからデータ取得
+		if (contact == null) {
+			return "error"; // 
+		}
+		model.addAttribute("contact", contact);
+		return "contactedit"; //contactedit.html
+	}
+
+	@PostMapping("/contacts/{id}/edit")
+	public String updateContact(@PathVariable Long id, @ModelAttribute Contact updatedContact) {
+		contactService.updateContact(id, updatedContact); // 更新
+		return "redirect:/admin/contacts"; // 一覧画面
+	}
+
+	@PostMapping("/contacts/{id}/delete")
+	public String deleteContact(@PathVariable Long id) {
+		contactService.deleteContactById(id); // contact削除
+		return "redirect:/admin/contacts"; // 一覧画面
+	}
+
 }
