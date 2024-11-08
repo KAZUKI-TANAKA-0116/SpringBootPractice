@@ -11,28 +11,29 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-				.authorizeRequests()
-				.requestMatchers("/admin/signup", "/admin/signin").permitAll() // signupとsigninへのアクセスを許可
-				.anyRequest().authenticated() // 他のURLは用認証
-				.and()
-				.formLogin()
-				.loginPage("/admin/signin") // カスタムのログインページ
-				.defaultSuccessUrl("/admin/contacts") // ログイン成功
-				.failureUrl("/admin/signin?error=true") // ログイン失敗
-				.permitAll()
-				.and()
-				.logout()
-				.permitAll();
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+            .requestMatchers("/admin/signup").permitAll() // signupへのアクセスを許可
+            .requestMatchers("/admin/signin").access("!isAuthenticated()") // 未認証ユーザーのみsigninにアクセス許可
+            .anyRequest().authenticated() // 他のURLは認証が必要
+            .and()
+            .formLogin()
+            .loginPage("/admin/signin") // カスタムのログインページ
+            .defaultSuccessUrl("/admin/contacts", true) // ログイン成功後のリダイレクト先
+            .failureUrl("/admin/signin?error=true") // ログイン失敗時のリダイレクト先
+            .permitAll()
+            .and()
+            .logout()
+            .permitAll();
 
-		return http.build();
-	}
+        return http.build();
+    }
 
-	// パスワードエンコーダーのBean定義
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    // パスワードエンコーダーのBean定義
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }

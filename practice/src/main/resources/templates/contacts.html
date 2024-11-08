@@ -18,7 +18,7 @@
 				<th>お問い合わせ種別</th>
 				<th>作成日時</th>
 				<th>更新日時</th>
-				<th>詳細</th> 
+				<th>詳細</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,7 +26,14 @@
 				<td th:text="${contact.id}"></td>
 				<td th:text="${contact.lastName}"></td>
 				<td th:text="${contact.firstName}"></td>
-				<td th:text="${contact.contactType}"></td>
+				<td>
+					<span th:switch="${contact.contactType}">
+						<span th:case="'services'">サービスに関するお問い合わせ</span>
+						<span th:case="'technicalQuestions'">技術的なお問い合わせ</span>
+						<span th:case="'others'">その他</span>
+						<span th:case="*">不明</span> <!-- デフォルト表示 -->
+					</span>
+				</td>
 				<td th:text="${contact.createdAt}"></td>
 				<td th:text="${contact.updatedAt}"></td>
 				<td>
@@ -37,6 +44,11 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<form th:action="@{/logout}" method="post" style="margin-top: 20px;">
+		<button type="submit">ログアウト</button>
+	</form>
+
 </body>
 
 </html>

@@ -41,7 +41,18 @@
 			</tr>
 			<tr>
 				<th>お問い合わせ種別</th>
-				<td><input type="text" th:field="*{contactType}" /></td>
+				<td>
+					<select th:field="*{contactType}">
+						<option th:value="services" th:text="'サービスに関するお問い合わせ'"
+							th:selected="${contact.contactType == 'services'}"></option>
+						<option th:value="technicalQuestions" th:text="'技術的なお問い合わせ'"
+							th:selected="${contact.contactType == 'technicalQuestions'}"></option>
+						<option th:value="others" th:text="'その他'" th:selected="${contact.contactType == 'others'}">
+						</option>
+					</select>
+					<span th:if="${#fields.hasErrors('contactType')}" th:errors="*{contactType}"
+						style="color: red"></span>
+				</td>
 			</tr>
 			<tr>
 				<th>内容</th>
@@ -57,11 +68,9 @@
 
 	<br />
 
-
 	<form th:action="@{/admin/contacts/{id}/delete(id=${contact.id})}" method="post" style="display:inline;">
 		<button type="submit" onclick="return confirm('本当に削除しますか？')">削除</button>
 	</form>
-
 
 	<form th:action="@{/logout}" method="post" style="display:inline;">
 		<button type="submit">ログアウト</button>

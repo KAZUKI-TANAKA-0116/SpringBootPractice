@@ -3,6 +3,8 @@ package com.example.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -45,6 +47,13 @@ public class AdminController {
 
 	@GetMapping("/signin")
 	public String showSigninForm() {
+		// 変更部分、signinformでログイン済みかどうかをチェック
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.isAuthenticated()
+				&& !authentication.getPrincipal().equals("anonymousUser")) {
+			// すでにログインしている場合は、contactsページにリダイレクト
+			return "redirect:/admin/contacts";
+		}
 		return "signin"; // signin.html
 	}
 
